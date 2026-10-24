@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+# OpenMinion runtime state (sessions, telemetry, generated agents.json)
+.openminion/
+seen.json
+briefs/failed-*.txt
+.docs/
+*.log
+run-*.log
