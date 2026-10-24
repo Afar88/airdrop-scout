@@ -106,10 +106,27 @@ a model judges campaigns.
 ## Status
 
 - ✅ Install, imports, tools against live Binance, dry-run, 45 offline + 2 live tests.
-- ✅ A real OpenMinion `ProviderError(AUTH_ERROR)` from **Cortensor Portal** and **OpenRouter**
-  with placeholder keys, which shows the config reaches the real endpoints.
-- ⏳ Not yet run with a real model key: verdict quality, `oss-20b` tool calling and JSON
-  compliance on Cortensor are still to be checked.
+- ✅ **First real-model run (2026-10-24):** `google/gemma-4-31b-it:free` on OpenRouter.
+  The forced tool call worked, the `ScoutReport` JSON validated on the first try, and the
+  run took about 30 s using 2 free requests. That day both new campaigns were trading
+  competitions, so it correctly returned SKIP for both. See
+  [`briefs/2026-10-24.md`](briefs/2026-10-24.md) and
+  [WHAT_WE_LEARNED.md §11](WHAT_WE_LEARNED.md).
+- ✅ A real OpenMinion `ProviderError(AUTH_ERROR)` from **Cortensor Portal** with a placeholder
+  key, which shows the config reaches the real endpoint.
+- ⏳ Cortensor Portal (`oss-20b`) and Gemma4-on-Portal runs wait on Portal access.
+
+## Upstream contributions (OpenMinion)
+
+| What | Link | State |
+| --- | --- | --- |
+| Bug: `@tool` fails with `from __future__ import annotations` + `Annotated` args | [openminion#376](https://github.com/openminion/openminion/issues/376) | Confirmed in scope by a maintainer |
+| Fix PR for #376 (resolve hints with `get_type_hints(include_extras=True)`, regression tests, changelog) | [openminion#383](https://github.com/openminion/openminion/pull/383) | Open against `dev` |
+| Bug: `Agent.run` returns `run_state="completed"` on an internal runtime error | [openminion#384](https://github.com/openminion/openminion/issues/384) | Reported |
+
+Repro scripts for each are in [`repro/`](repro/) and need no API key.
+All findings, including rough edges and docs gaps, are in
+[WHAT_WE_LEARNED.md](WHAT_WE_LEARNED.md) and [BUILDING_BLOCKS.md](BUILDING_BLOCKS.md).
 
 ## Provenance
 

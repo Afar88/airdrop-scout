@@ -10,3 +10,4 @@ briefs/failed-*.txt
 .docs/
 *.log
 run-*.log
+*.patch

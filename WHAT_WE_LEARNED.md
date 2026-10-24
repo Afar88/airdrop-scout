@@ -9,7 +9,9 @@ OpenAI-compatible server in `tests/mock_openai.py`.
 
 ---
 
-## 1. `@tool` breaks with `from __future__ import annotations` + `Annotated` [bug, fix ready]
+## 1. `@tool` breaks with `from __future__ import annotations` + `Annotated` [bug, fixed upstream PR]
+
+**Upstream:** reported as [openminion#376](https://github.com/openminion/openminion/issues/376) (a maintainer confirmed it in scope), fixed in [openminion#383](https://github.com/openminion/openminion/pull/383). Per the maintainer's review, the fix uses no blanket fallback. An unresolvable name raises a clear `TypeError`.
 
 **Seen:** `openminion/tools/decorator.py::_build_args_model` passes the raw
 `inspect.signature` annotations to `pydantic.create_model`. Under PEP 563 these
@@ -33,6 +35,8 @@ decorates a function defined in a module using `from __future__ import annotatio
 **Workaround here:** `airdrop_scout/tools.py` doesn't use the future import.
 
 ## 2. Runtime errors come back as a "completed" reply, not an exception [bug]
+
+**Upstream:** [openminion#384](https://github.com/openminion/openminion/issues/384). There's a standalone trigger with nothing to do with item 1: a tool that returns a non-JSON-serializable object (`repro/repro_run_state_completed_on_error.py`). It reproduces on 0.1.10 and on `dev` 367aa481.
 
 **Seen:** in item 1 the run doesn't raise. `AgentRunResult.run_state == "completed"`
 and `result.text == "a: State machine error: ..."`. Without `output_type` the
@@ -186,6 +190,41 @@ scout keeps its own `seen.json`. That saves one LLM call per run.
   Cortensor Portal and OpenRouter returned a typed
   `ProviderError(code="AUTH_ERROR")` with `details.status_code == 401` and the
   upstream message, so the config and adapter wiring reach the real APIs.
+
+## 11. First real-model run: Gemma 4 31B (free) on OpenRouter
+
+Date 2026-10-24, `google/gemma-4-31b-it:free`, `--days 2`, openminion 0.1.10.
+
+- **Free-tier 429s are upstream and bursty.** On the evening of 2026-10-23, both
+  Gemma 4 free models (31B and 26B-A4B) returned `429 Provider returned error`.
+  On the morning of 2026-10-24, one attempt hung for more than 115 s before we
+  killed it. The next attempt failed after about 25 s with the same 429. The
+  attempt after that, a minute later, succeeded. The 429s did **not** count
+  toward the key's `free_model_daily_requests` (still 0/50 after them, per
+  `GET /api/v1/key`). OpenMinion returns them as a typed
+  `ProviderError(code="RATE_LIMITED", details.status_code=429,
+  reason_code="provider_rate_limited")`, which made them easy to tell apart.
+  Practical rule: retry a 429 after a short pause before you switch models.
+- **Request cost:** the successful run used **2** free requests on
+  OpenRouter's counter. That is the forced `list_recent_campaigns` call and
+  then the final answer. Per item 8, `stats.llm_calls` reported 1. The
+  closure/finalization structured calls we saw against the mock did not add to
+  the OpenRouter count here. The 50 free requests a day are enough for many
+  runs.
+- **Latency:** about 29 s inside `Agent.run` (`duration_ms=29262`), about 35 s
+  wall clock with startup. Tokens: 8,640 input, 612 output.
+- **Tool calling:** Gemma called the forced tool correctly. Then it chose not to
+  call `fetch_campaign_details`, because both campaigns had "Trade ..." titles.
+  The method allows that ("titles that obviously require trading can be marked
+  SKIP without fetching"). So `nigeria` stayed `"unclear"` and `deadline_utc`
+  stayed `""` instead of being made up, which is the right behaviour.
+- **JSON compliance:** the final answer passed `ScoutReport` validation on the
+  first try, with no `AgentOutputValidationError` and no repair round, even
+  with the runtime's "Never expose raw JSON" line (item 5). Putting the schema
+  in the run message was enough.
+- **Coverage check:** `binance_feed.scan(days=2)` returned exactly the same 2
+  campaigns, so the model left nothing out. There were no DO_IT or MAYBE
+  campaigns in this window. Both were trading competitions.
 
 ## Data-source quirks (not OpenMinion)
 
