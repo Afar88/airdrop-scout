@@ -9,6 +9,8 @@ typed report that becomes a short daily markdown brief.
 Built for **Cortensor Hackathon #5**. Runs on Cortensor Portal (`oss-20b`),
 OpenRouter, OpenAI or a local Ollama model, chosen by environment variables.
 
+**▶ Demo video (2 min):** https://www.youtube.com/watch?v=a2f2aSxvz9E
+
 > Read-only. It never signs in, touches a wallet, or places a trade. Not financial advice.
 
 ---
