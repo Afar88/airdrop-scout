@@ -124,8 +124,8 @@ a model judges campaigns.
 | --- | --- | --- |
 | Bug: `@tool` fails with `from __future__ import annotations` + `Annotated` args | [openminion#376](https://github.com/openminion/openminion/issues/376) | Confirmed by a maintainer, fixed |
 | Fix PR for #376 (resolve hints with `get_type_hints(include_extras=True)`, regression tests, changelog) | [openminion#383](https://github.com/openminion/openminion/pull/383) | ✅ Approved and merged into `dev` (2026-10-24) |
-| Bug: `Agent.run` returns `run_state="completed"` on an internal runtime error | [openminion#384](https://github.com/openminion/openminion/issues/384) | Confirmed by a maintainer; awaiting release |
-| Fix PR for #384 (a fatal runtime error now returns `run_state="failed"` with its structured error; recoverable tool errors still complete; regression tests, changelog) | [openminion#405](https://github.com/openminion/openminion/pull/405) | ✅ Approved and merged into `dev` (2026-10-25, all 18 upstream checks passed) |
+| Bug: `Agent.run` returns `run_state="completed"` on an internal runtime error | [openminion#384](https://github.com/openminion/openminion/issues/384) | Confirmed by a maintainer; fixed and released in [v0.1.12](https://github.com/openminion/openminion/releases/tag/v0.1.12) |
+| Fix PR for #384 (a fatal runtime error now returns `run_state="failed"` with its structured error; recoverable tool errors still complete; regression tests, changelog) | [openminion#405](https://github.com/openminion/openminion/pull/405) | ✅ Approved and merged into `dev` (2026-10-25, all 18 upstream checks passed); shipped in v0.1.12 on PyPI (2026-10-26) and re-verified on the published package |
 
 Repro scripts for each are in [`repro/`](repro/) and need no API key.
 All findings, including rough edges and docs gaps, are in
