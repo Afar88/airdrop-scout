@@ -165,6 +165,18 @@ scout keeps its own `seen.json`. That saves one LLM call per run.
 - `dir(openminion)` doesn't list the lazy exports, so they look missing in a
   REPL. `from openminion import Agent` still works.
 
+## 10a. `@tool` model and dataclass arguments arrive as plain dicts [bug, fix PR open]
+
+A `@tool` parameter typed as a Pydantic model or a dataclass is validated, then dumped back to a
+`dict` before the function is called (`tools/decorator.py` `_handler` calls `model_dump()`, and
+`modules/tool/runtime/argument_repair.py` does the same). Code like `order.qty` then raises
+`AttributeError`, the model only sees a generic tool failure, and the run still ends `completed`.
+Reproduces on 0.1.12 and `dev` with no API key: `repro/repro_tool_model_args_arrive_as_dict.py`.
+
+**Upstream:** [openminion#435](https://github.com/openminion/openminion/issues/435), fix in
+[openminion#436](https://github.com/openminion/openminion/pull/436) (against `dev`, with
+regression tests and an Unreleased changelog entry).
+
 ## 10. Other observations
 
 - **`forced_tools`:** on the first step only the forced tool is shown to the model,
