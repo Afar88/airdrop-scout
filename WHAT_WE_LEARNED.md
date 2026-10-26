@@ -36,7 +36,7 @@ decorates a function defined in a module using `from __future__ import annotatio
 
 ## 2. Runtime errors come back as a "completed" reply, not an exception [bug]
 
-**Upstream:** [openminion#384](https://github.com/openminion/openminion/issues/384). There's a standalone trigger with nothing to do with item 1: a tool that returns a non-JSON-serializable object (`repro/repro_run_state_completed_on_error.py`). It reproduces on 0.1.10 and on `dev` 367aa481. Fixed in [openminion#405](https://github.com/openminion/openminion/pull/405), merged into `dev` on 2026-10-25 (commit f9c4f65b).
+**Upstream:** [openminion#384](https://github.com/openminion/openminion/issues/384). There's a standalone trigger with nothing to do with item 1: a tool that returns a non-JSON-serializable object (`repro/repro_run_state_completed_on_error.py`). It reproduces on 0.1.10 and on `dev` 367aa481. Fixed in [openminion#405](https://github.com/openminion/openminion/pull/405), merged into `dev` on 2026-10-25 (commit f9c4f65b) and released in [openminion 0.1.12](https://github.com/openminion/openminion/releases/tag/v0.1.12) on 2026-10-26. Re-checked on the published `openminion==0.1.12` in a fresh venv: the non-serializable tool result now returns `run_state="failed"` with `error_code=RUNTIME_ERROR`, while a recoverable tool failure and a normal tool turn still return `completed`.
 
 **Seen:** in item 1 the run doesn't raise. `AgentRunResult.run_state == "completed"`
 and `result.text == "a: State machine error: ..."`. Without `output_type` the
