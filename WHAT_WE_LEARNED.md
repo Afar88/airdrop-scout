@@ -176,6 +176,7 @@ Reproduces on 0.1.12 and `dev` with no API key: `repro/repro_tool_model_args_arr
 **Upstream:** [openminion#435](https://github.com/openminion/openminion/issues/435), fix in
 [openminion#436](https://github.com/openminion/openminion/pull/436) (against `dev`, with
 regression tests and an Unreleased changelog entry).
+Aliased `@tool` arguments (top-level or nested) still fail through SDK `Agent.run` on `dev` because of a separate shared-runtime bug (canonical `model_dump()` and then alias-only re-validation). A separate upstream issue is drafted (2026-10-27); #436 tracks it as a strict xfail.
 
 ## 10. Other observations
 
