@@ -1,0 +1,12 @@
+openminion 0.1.12 from /tmp/v12/lib/python3.11/site-packages/openminion/__init__.py
+python 3.11.17  pydantic 2.14.1
+FAIL A original #435 repro, handler(validated args model): AttributeError: 'dict' object has no attribute 'chain'
+FAIL B handler(raw mapping) and handler(model_dump()): AttributeError: 'dict' object has no attribute 'chain'
+FAIL C Pydantic dataclass parameter + constraint/default: AttributeError: 'dict' object has no attribute 'start'
+FAIL D nested structured values + defaults: TypeError: object of type 'builtin_function_or_method' has no len()
+FAIL E invalid / extra inputs rejected: TypeError: object of type 'builtin_function_or_method' has no len()
+FAIL F alias + canonical mappings (#436 review case): TypeError: show() got an unexpected keyword argument 'external_value'
+FAIL G SDK Agent.run, original repro (BaseModel + std dataclass): AssertionError: 
+FAIL H SDK Agent.run, nested model + Pydantic dataclass: AssertionError: 
+INFO I (#454, not part of #435) SDK nested alias: tool status=failed error=INVALID_ARGUMENT handler_called=False
+SUMMARY 0/8 passed; FAILED: ['A original #435 repro, handler(validated args model)', 'B handler(raw mapping) and handler(model_dump())', 'C Pydantic dataclass parameter + constraint/default', 'D nested structured values + defaults', 'E invalid / extra inputs rejected', 'F alias + canonical mappings (#436 review case)', 'G SDK Agent.run, original repro (BaseModel + std dataclass)', 'H SDK Agent.run, nested model + Pydantic dataclass']
