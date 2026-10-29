@@ -1,0 +1,14 @@
+openminion 0.1.15
+#0: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#1: cancel()=True tool_calls=[] final_text='' persisted=failed last_event=run.failed error_code=CancelledError response_chars=None
+#2: cancel()=True tool_calls=[] final_text='' persisted=failed last_event=run.failed error_code=CancelledError response_chars=None
+#3: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#4: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#5: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#6: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#7: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#8: cancel()=True tool_calls=[] final_text='' persisted=completed last_event=run.completed error_code=None response_chars=36
+#9: cancel()=True tool_calls=[] final_text='' persisted=failed last_event=run.failed error_code=CancelledError response_chars=None
+#10: cancel()=True tool_calls=[] final_text='' persisted=failed last_event=run.failed error_code=CancelledError response_chars=None
+#11: cancel()=True tool_calls=[] final_text='' persisted=failed last_event=run.failed error_code=CancelledError response_chars=None
+persisted states: {'completed': 7, 'failed': 5}

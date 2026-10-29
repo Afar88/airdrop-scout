@@ -1,0 +1,125 @@
+Traceback (most recent call last):
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/events/module.py", line 38, in run_telemetry_result
+    loop = asyncio.get_running_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/events/module.py", line 41, in run_telemetry_result
+    asyncio.run(_await_telemetry_result(result))
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/events/module.py", line 8, in _await_telemetry_result
+    return await result
+           ^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/service.py", line 829, in emit_canonical_event
+    return await self._service.record_event(event)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/service.py", line 125, in record_event
+    created = await asyncio.to_thread(self._store.insert_event_if_absent, local)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/storage/store.py", line 178, in insert_event_if_absent
+    if self._record_store.insert_if_absent(
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/storage/record_store.py", line 211, in insert_if_absent
+    return self.execute_count(sql, tuple(row[column] for column in columns)) == 1
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/storage/record_store.py", line 478, in execute_count
+    cursor = self._conn.execute(sql, tuple(params or ()))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+Traceback (most recent call last):
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/events/module.py", line 38, in run_telemetry_result
+    loop = asyncio.get_running_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/events/module.py", line 41, in run_telemetry_result
+    asyncio.run(_await_telemetry_result(result))
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/events/module.py", line 8, in _await_telemetry_result
+    return await result
+           ^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/service.py", line 829, in emit_canonical_event
+    return await self._service.record_event(event)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/service.py", line 125, in record_event
+    created = await asyncio.to_thread(self._store.insert_event_if_absent, local)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sandbox/.local/share/uv/python/cpython-3.11.17-linux-aarch64-gnu/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/telemetry/storage/store.py", line 178, in insert_event_if_absent
+    if self._record_store.insert_if_absent(
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/storage/record_store.py", line 211, in insert_if_absent
+    return self.execute_count(sql, tuple(row[column] for column in columns)) == 1
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/v15/lib/python3.11/site-packages/openminion/modules/storage/record_store.py", line 478, in execute_count
+    cursor = self._conn.execute(sql, tuple(params or ()))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+Traceback (most recent call last):
+  File "/tmp/run384/verify_384.py", line 126, in deco
+    detail = fn()
+             ^^^^
+  File "/tmp/run384/verify_384.py", line 346, in _
+    assert all(o.startswith(("failed", "cancelled")) for o in outcomes), detail
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 8 repeats, handle.cancel() returned True each time, tool never ran; persisted: {'completed (run.completed)': 3, 'failed (run.failed, error_code=CancelledError)': 5}
+openminion 0.1.15 from /tmp/v15/lib/python3.11/site-packages/openminion/__init__.py
+python 3.11.17  pydantic 2.14.1  provider: local scripted OpenAI-compatible mock (om_mock.py), model 'mock-model'
+PASS 1 fatal: non-JSON-serializable tool result -> failed (SDK + persisted)
+     SDK run_state=failed error_code=RUNTIME_ERROR brain_status=error; persisted run 10c640e5 (== SDK run_id) state=failed, terminal=run.failed
+PASS 2 recoverable: tool raises, model answers -> completed with EXEC_ERROR
+     SDK run_state=completed error_code=EXEC_ERROR tool_loop_termination_reason=tool_no_success; persisted completed, terminal=run.completed
+PASS 3 success control -> completed
+     SDK run_state=completed brain_status=done text='a: FINAL_OK'; persisted completed, events=['run.queued', 'run.running', 'run.waiting_tool', 'run.responding', 'run.completed']
+PASS 4 timeout: provider 6s, timeout_seconds=2 -> TurnTimeoutError, persisted failed
+     raised openminion.TurnTimeoutError(Turn execution timed out after 2.00 seconds.) after 2.2s; persisted state=failed, terminal=run.failed error_code=CancelledError
+PASS 5 cancel_event set at 1.5s while waiting on provider -> raises, persisted failed
+     raised RuntimeError(Turn cancelled.) after 1.5s; persisted state=failed, terminal=run.failed error_code=CancelledError
+PASS 6 cancel_event set at 2.5s while a 5s tool runs -> raises, persisted failed
+     tool started; raised RuntimeError(Turn cancelled.) after 2.5s; persisted state=failed, terminal=run.failed error_code=CancelledError; note: the in-flight sync tool body still ran to completion in the background after cancel; persisted state unchanged afterwards
+PASS 7 approval pause: dangerous tool, no approval_callback -> confirmation prompt, tool not run
+     tool not called; brain_status=waiting_user; text starts 'a: Policy confirmation required.' and lists 'Risk: destructive'; SDK run_state=completed; persisted completed (run.completed), no run.waiting_tool
+PASS 8 approval_callback deny -> not run; allow -> run
+     deny: callback got ('lookup_order', {'order_id': 'A-1'}), tool not called, text='a: Confirmation denied. The action was not run.', persisted completed
+     allow: tool ran once, run_state=completed, persisted completed
+PASS 9 submit_turn approval stream: allow_once / deny / cancel
+     allow_once: approval phases=['requested', 'resolved'], tool calls=['lookup_order:A-104'], final_text='a: FINAL_OK', stale approval id refused, persisted completed (run.completed)
+     deny: approval phases=['requested', 'resolved'], tool calls=[], final_text='a: Tool execution denied by operator', stale approval id refused, persisted completed (run.completed)
+     cancel: approval phases=['requested', 'resolved'], tool calls=[], final_text='', stale approval id refused, persisted failed (run.failed, error_code=CancelledError)
+FAIL 10 cancel during approval wait: persisted state agrees with the caller on every repeat: AssertionError: 8 repeats, handle.cancel() returned True each time, tool never ran; persisted: {'completed (run.completed)': 3, 'failed (run.failed, error_code=CancelledError)': 5}
+
+SUMMARY 9/10 passed; FAILED: ['10 cancel during approval wait: persisted state agrees with the caller on every repeat']
+exit=1

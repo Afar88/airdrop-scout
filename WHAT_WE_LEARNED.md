@@ -36,7 +36,7 @@ decorates a function defined in a module using `from __future__ import annotatio
 
 ## 2. Runtime errors come back as a "completed" reply, not an exception [bug]
 
-**Upstream:** [openminion#384](https://github.com/openminion/openminion/issues/384). There's a standalone trigger with nothing to do with item 1: a tool that returns a non-JSON-serializable object (`repro/repro_run_state_completed_on_error.py`). It reproduces on 0.1.10 and on `dev` 367aa481. Fixed in [openminion#405](https://github.com/openminion/openminion/pull/405), merged into `dev` on 2026-10-25 (commit f9c4f65b) and released in [openminion 0.1.12](https://github.com/openminion/openminion/releases/tag/v0.1.12) on 2026-10-26. Re-checked on the published `openminion==0.1.12` in a fresh venv: the non-serializable tool result now returns `run_state="failed"` with `error_code=RUNTIME_ERROR`, while a recoverable tool failure and a normal tool turn still return `completed`. The persisted `event_run_facts` row matches (`failed`, `has_error=1` for the fatal case). That verification was posted on #384 on 2026-10-27, as the maintainer asked before closing.
+**Upstream:** [openminion#384](https://github.com/openminion/openminion/issues/384). There's a standalone trigger with nothing to do with item 1: a tool that returns a non-JSON-serializable object (`repro/repro_run_state_completed_on_error.py`). It reproduces on 0.1.10 and on `dev` 367aa481. Fixed in [openminion#405](https://github.com/openminion/openminion/pull/405), merged into `dev` on 2026-10-25 (commit f9c4f65b) and released in [openminion 0.1.12](https://github.com/openminion/openminion/releases/tag/v0.1.12) on 2026-10-26. Re-checked on the published `openminion==0.1.12` in a fresh venv: the non-serializable tool result now returns `run_state="failed"` with `error_code=RUNTIME_ERROR`, while a recoverable tool failure and a normal tool turn still return `completed`. The persisted `event_run_facts` row matches (`failed`, `has_error=1` for the fatal case). That verification was posted on #384 on 2026-10-27, as the maintainer asked before closing. The maintainer then asked for a self-contained probe that asserts each case and reads the exact run through the public reader, plus the cancellation, timeout and approval-pause checks. `verify/verify_384.py` does that; on published 0.1.15 (2026-10-29) fatal/recoverable/success, timeout (`TurnTimeoutError`, persisted `failed`), `cancel_event` cancellation (persisted `failed`, `error_code=CancelledError`) and approval pause/allow/deny all pass. One finding: cancelling a `submit_turn` handle while it waits for approval never runs the tool and returns an empty result, but the persisted run is sometimes `completed` (the denial reply) instead of `failed`; it reproduces on 0.1.12 too, so it predates #405 (`verify/repro_cancel_during_approval.py`). Also noted: cancelling during a synchronous tool returns at once, but the tool body keeps running to completion in the background.
 
 **Seen:** in item 1 the run doesn't raise. `AgentRunResult.run_state == "completed"`
 and `result.text == "a: State machine error: ..."`. Without `output_type` the
@@ -165,7 +165,7 @@ scout keeps its own `seen.json`. That saves one LLM call per run.
 - `dir(openminion)` doesn't list the lazy exports, so they look missing in a
   REPL. `from openminion import Agent` still works.
 
-## 10a. `@tool` model and dataclass arguments arrive as plain dicts [bug, fix PR open]
+## 10a. `@tool` model and dataclass arguments arrive as plain dicts [bug, fixed upstream]
 
 A `@tool` parameter typed as a Pydantic model or a dataclass is validated, then dumped back to a
 `dict` before the function is called (`tools/decorator.py` `_handler` calls `model_dump()`, and
@@ -175,7 +175,11 @@ Reproduces on 0.1.12 and `dev` with no API key: `repro/repro_tool_model_args_arr
 
 **Upstream:** [openminion#435](https://github.com/openminion/openminion/issues/435), fix in
 [openminion#436](https://github.com/openminion/openminion/pull/436) (against `dev`, with
-regression tests and an Unreleased changelog entry).
+regression tests and an Unreleased changelog entry), merged into `dev` 2026-10-28 and released in
+0.1.14/0.1.15. Verified 2026-10-29 on the published `openminion==0.1.15` in clean venvs with
+Pydantic 2.14.1 and 2.10.6 (`verify/verify_435.py`, 8/8 pass: BaseModel, standard and Pydantic
+dataclasses, nested values, constraints/defaults, invalid and extra input rejection, alias and
+canonical handler mappings, and SDK `Agent.run`). The same harness fails all 8 checks on 0.1.12.
 Aliased `@tool` arguments (top-level or nested) still fail through SDK `Agent.run` on `dev` because of a separate shared-runtime bug (canonical `model_dump()` and then alias-only re-validation). That bug is filed as [openminion#454](https://github.com/openminion/openminion/issues/454) (2026-10-27); #436 keeps it as a strict xfail whose reason links to #454.
 
 ## 10. Other observations

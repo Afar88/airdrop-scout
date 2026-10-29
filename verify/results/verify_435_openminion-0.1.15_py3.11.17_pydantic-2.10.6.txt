@@ -1,0 +1,14 @@
+openminion 0.1.15 from /tmp/v15p210/lib/python3.11/site-packages/openminion/__init__.py
+python 3.11.17  pydantic 2.10.6
+PASS A original #435 repro, handler(validated args model) -> 'solana >= 3 over 7d'; received Filter, Window
+PASS B handler(raw mapping) and handler(model_dump()) raw mapping + model_dump() -> 'ethereum >= 0 over 2d', types ('Filter', 'Window'), default min_score=0 applied
+PASS C Pydantic dataclass parameter + constraint/default -> 'span 4-10'; received PdSpan(start=4, end=10 default); end=500 rejected (less_than_equal)
+PASS D nested structured values + defaults -> 'items=2 level=3 prio=2'; Order/Inner/[Item, Item] instances; defaults level=3 qty=1 priority=2 tag=None note=None
+PASS E invalid / extra inputs rejected rejected with ValidationError: wrong type (items='x')=list_type; nested constraint (level=9)=less_than_equal; top-level constraint (priority=0)=greater_than_equal; missing required (order)=missing; missing nested (items)=missing; extra top-level input=extra_forbidden; invalid enum=enum; dataclass missing field=missing
+PASS F alias + canonical mappings (#436 review case) handler results ['3', '3', '3', '4', '5']; args model still alias-only; rejected -1/extra/empty: ['greater_than_equal', 'extra_forbidden', 'missing']
+PASS G SDK Agent.run, original repro (BaseModel + std dataclass) tool received Filter/Window; tool status=success output='solana >= 3 over 7d'; run_state=completed
+PASS H SDK Agent.run, nested model + Pydantic dataclass nested Order/Inner/Item and Pydantic dataclass delivered as instances via Agent.run; statuses success/success; run_state completed/completed
+INFO I (#454, not part of #435) SDK nested alias: tool status=failed error=INVALID_ARGUMENT handler_called=False
+
+SUMMARY 8/8 passed
+exit=0

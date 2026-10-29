@@ -1,0 +1,5 @@
+handler(validated model) -> solana >= 3 over 7d
+schema sent for f: ['chain', 'min_score']
+types the tool function received: {'f': 'Filter', 'window': 'Window'}
+tool result the model saw: success Tool executed successfully None None
+run_state='completed'
