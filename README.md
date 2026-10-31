@@ -13,6 +13,21 @@ OpenRouter, OpenAI or a local Ollama model, chosen by environment variables.
 
 > Read-only. It never signs in, touches a wallet, or places a trade. Not financial advice.
 
+## ⏱️ How to test in 2 minutes
+
+No time to install? Watch the [2-minute demo](https://www.youtube.com/watch?v=a2f2aSxvz9E). Otherwise (Python 3.11+):
+
+```bash
+git clone https://github.com/Afar88/airdrop-scout && cd airdrop-scout
+python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements-dev.txt
+python -m airdrop_scout --dry-run --days 3 --no-mark-seen   # no key: live Binance tools, no model
+pytest -q                                                   # 45 offline tests, incl. a real OpenMinion Agent vs a local mock server
+# Full agent run with a FREE key (https://openrouter.ai/keys) and a free model:
+SCOUT_PROVIDER=openrouter OPENROUTER_API_KEY=sk-or-... SCOUT_MODEL=google/gemma-4-31b-it:free python -m airdrop_scout --days 2 --no-mark-seen
+```
+
+You should see a markdown brief printed and saved to `briefs/`: this week's Binance campaigns sorted into **DO IT / MAYBE / Skipped**, with cost, trading-volume and Nigeria checks and deadlines in WAT. No-key alternative: a local [Ollama](https://ollama.com) with `SCOUT_PROVIDER=ollama` (pulls nothing itself; run `ollama pull llama3.1` first).
+
 ---
 
 ## Quick start
